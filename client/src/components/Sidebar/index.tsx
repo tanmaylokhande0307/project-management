@@ -26,10 +26,14 @@ import { usePathname } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/redux";
 import Link from "next/link";
 import { setIsSidebarCollapsed } from "@/state";
+import { useGetProjectQuery } from "@/state/api";
 
 const Sidebar = () => {
   const [showProjects, setShowProjects] = useState(true);
   const [showPriority, setShowPriority] = useState(true);
+
+  const { data: projects } = useGetProjectQuery();
+
   const isSidebarCollapsed = useAppSelector(
     (state) => state.global.isSidebarCollapsed,
   );
@@ -87,6 +91,11 @@ const Sidebar = () => {
             <ChevronDown className="h-5 w-5" />
           )}
         </button>
+
+          {showProjects && projects?.map((project)=>(
+            <SidebarLink key={project.id} icon={Briefcase} label={project.name} href={`/projects/${project.id}`}/>
+          ))}
+
         <button
           onClick={() => setShowPriority((prev) => !prev)}
           className="flex w-full items-center justify-between px-8 py-3 text-gray-500"
@@ -100,11 +109,27 @@ const Sidebar = () => {
         </button>
         {showPriority && (
           <>
-            <SidebarLink href="/priority/urgent" icon={AlertCircle} label="Urgent" />
-            <SidebarLink href="/priority/high" icon={ShieldAlert} label="High" />
-            <SidebarLink href="/priority/medium" icon={AlertTriangle} label="Medium" />
+            <SidebarLink
+              href="/priority/urgent"
+              icon={AlertCircle}
+              label="Urgent"
+            />
+            <SidebarLink
+              href="/priority/high"
+              icon={ShieldAlert}
+              label="High"
+            />
+            <SidebarLink
+              href="/priority/medium"
+              icon={AlertTriangle}
+              label="Medium"
+            />
             <SidebarLink href="/priority/low" icon={AlertOctagon} label="Low" />
-            <SidebarLink href="/priority/backlog" icon={Layers3} label="Backlog" />
+            <SidebarLink
+              href="/priority/backlog"
+              icon={Layers3}
+              label="Backlog"
+            />
           </>
         )}
       </div>

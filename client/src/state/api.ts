@@ -49,7 +49,7 @@ export interface Task {
   startDate?: string;
   dueDate?: string;
   points?: number;
-  projectId: string;
+  projectId: number;
   authorUserId?: number;
   assignedUserId?: number;
 
